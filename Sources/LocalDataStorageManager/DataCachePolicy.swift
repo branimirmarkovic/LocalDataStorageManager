@@ -41,6 +41,10 @@ class DefaultCachePolicy: DataCachePolicy {
     init(_ timeLimit: TimePolicyLimits) {
         self.timeLimit = timeLimit.rawValue
     }
+    
+    init(customTimeLimit: TimeInterval) {
+        self.timeLimit = customTimeLimit
+    }
 
     // Check if the data associated with a TimeValidable object is still valid based on the time limit.
     func isDataValid(for object: TimeValidable) -> Bool {
