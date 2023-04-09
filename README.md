@@ -1,13 +1,13 @@
 # LocalDataStorageManager
 
-A Swift package that simplifies the process of managing local file storage on iOS devices. The package provides an easy-to-use API for reading, writing, and deleting files in a specified directory within the app's document directory. The package also includes comprehensive unit tests to ensure its reliability and stability.
+A Swift package that simplifies the process of managing local file storage on iOS devices with additional data validation policy support. The package provides an easy-to-use API for reading, writing, and deleting files in a specified directory within the app's document directory. The package also includes comprehensive unit tests to ensure its reliability and stability.
 
 ## Features
 
 - Automatically creates and manages a main directory for local file storage.
 - Provides asynchronous read, write, and delete operations for better performance and user experience.
 - Uses Swift's Result type for clean and safe error handling.
-- Supports FileManager dependency injection for testing purposes.
+- Adds a data validation policy to ensure data freshness and avoid using stale data.
 - Covered by comprehensive unit tests to ensure reliability and stability.
 
 ## Usage
@@ -55,6 +55,17 @@ A Swift package that simplifies the process of managing local file storage on iO
        }
    }
    ```
+   
+## Usage with data validation policy
+
+1. Initialize a LocalDataStorageManagerWithDataValidationPolicyDecorator instance:
+   ```swift
+   let dataCachePolicy = DefaultCachePolicy(.tenMinutes)
+   let dataStorageManagerWithDataValidationPolicy = LocalDataStorageManagerWithDataValidationPolicyDecorator(dataCachePolicy: dataCachePolicy, dataStorageManager: storageManager)
+   ```
+2. Follow the same usage instructions for the LocalDataStorageManager for read, write, and delete operations using the **dataStorageManagerWithDataValidationPolicy** instance.
+
+
 ## Requirements
 
 - Swift 5.0 or later
