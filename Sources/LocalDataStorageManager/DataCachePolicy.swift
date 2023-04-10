@@ -8,7 +8,7 @@
 import Foundation
 
 
-protocol DataCachePolicy {
+public protocol DataCachePolicy {
     var timeLimit: TimeInterval { get set }
     func isDataValid(for object: TimeValidable) -> Bool
 }

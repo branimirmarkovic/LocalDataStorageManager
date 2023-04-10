@@ -7,7 +7,7 @@
 
 import Foundation
 
-class LocalDataStorageManagerWithDataValidationPolicyDecorator: DataStorageManager {
+public class LocalDataStorageManagerWithDataValidationPolicyDecorator: DataStorageManager {
     
     enum ManagerError: Error {
         case dataNoLongerValid
@@ -22,14 +22,14 @@ class LocalDataStorageManagerWithDataValidationPolicyDecorator: DataStorageManag
     private let jsonDecoder: JSONDecoder
     private let jsonEncoder: JSONEncoder
     
-    init(dataCachePolicy: DataCachePolicy, dataStorageManager: DataStorageManager) {
+    public init(dataCachePolicy: DataCachePolicy, dataStorageManager: DataStorageManager) {
         self.dataCachePolicy = dataCachePolicy
         self.dataStorageManager = dataStorageManager
         self.jsonDecoder = JSONDecoder()
         self.jsonEncoder = JSONEncoder()
     }
     
-    func read(from url: String, completion: @escaping (Result<Data, Error>) -> Void) {
+   public func read(from url: String, completion: @escaping (Result<Data, Error>) -> Void) {
         dataStorageManager.read(from: url) {[weak self] result in
             guard let self = self else {return}
             switch result {
@@ -49,7 +49,7 @@ class LocalDataStorageManagerWithDataValidationPolicyDecorator: DataStorageManag
         }
     }
     
-    func write(data: Data, to url: String, completion: @escaping (Result<Void, Error>) -> Void) {
+    public func write(data: Data, to url: String, completion: @escaping (Result<Void, Error>) -> Void) {
         let objectWrapper = TimeValidableDataWrapper(timeStamp: Date(), data: data)
         guard let writeData = try? jsonEncoder.encode(objectWrapper) else {
             completion(.failure(ManagerError.encodingError))
@@ -58,7 +58,7 @@ class LocalDataStorageManagerWithDataValidationPolicyDecorator: DataStorageManag
         dataStorageManager.write(data: writeData, to: url, completion: completion)
     }
     
-    func delete(at url: String, completion: @escaping (Result<Void, Error>) -> Void) {
+   public func delete(at url: String, completion: @escaping (Result<Void, Error>) -> Void) {
         dataStorageManager.delete(at: url, completion: completion)
     }
 }

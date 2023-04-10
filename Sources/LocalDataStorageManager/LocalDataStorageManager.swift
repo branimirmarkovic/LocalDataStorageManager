@@ -8,7 +8,7 @@
 
 import Foundation
 
-class LocalDataStorageManager {
+public class LocalDataStorageManager {
     
     enum SetupError: Swift.Error {
         case invalidDocumentsDirectory
@@ -27,7 +27,7 @@ class LocalDataStorageManager {
     private let fileManager: FileManager
     private var mainDirectoryUrl: URL
     
-    init(fileManager: FileManager = FileManager.default, rootDirectoryName: String = "RootDirectory") throws {
+    public init(fileManager: FileManager = FileManager.default, rootDirectoryName: String = "RootDirectory") throws {
         self.fileManager = fileManager
         self.mainDirectoryUrl = try Self.setUp(fileManager: fileManager, rootDirectoryName: rootDirectoryName)
     }
@@ -58,7 +58,7 @@ class LocalDataStorageManager {
     }
     
     
-    func read(from url: String, completion: @escaping (Result<Data, Error>) -> Void) {
+    public func read(from url: String, completion: @escaping (Result<Data, Error>) -> Void) {
         let finalPath = self.mainDirectoryUrl.absoluteString + "/" + url
         guard let url = URL(string: finalPath) else {
             completion(.failure(LocalDataManagerError.invalidURL))
@@ -76,7 +76,7 @@ class LocalDataStorageManager {
         
     }
     
-    func write(data: Data, to url: String, completion: @escaping (Result<Void, Error>) -> Void) {
+    public func write(data: Data, to url: String, completion: @escaping (Result<Void, Error>) -> Void) {
         let finalPath = self.mainDirectoryUrl.path + "/" + url
          let url = URL(fileURLWithPath: finalPath)
         let directoryUrl = url.deletingLastPathComponent()
@@ -117,7 +117,7 @@ class LocalDataStorageManager {
         
     }
     
-    func delete(at url: String, completion: @escaping (Result<Void, Error>) -> Void) {
+    public func delete(at url: String, completion: @escaping (Result<Void, Error>) -> Void) {
         let finalPath = self.mainDirectoryUrl.path + "/" + url
         let fileUrl = URL(fileURLWithPath: finalPath)
         

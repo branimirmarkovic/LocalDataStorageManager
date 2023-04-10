@@ -7,7 +7,7 @@
 
 import Foundation
 
-protocol TimeValidable {
+public protocol TimeValidable {
     var timeStamp: Date { get set }
 }
 
