@@ -77,6 +77,6 @@ To add LocalDataStorageManager to your project, follow these steps:
 
 1. Open your project in Xcode.
 2. Go to `File` > `Swift Packages` > `Add Package Dependency`.
-3. Enter the URL of this repository (https://github.com/YourUsername/LocalDataStorageManager.git) and click `Next`.
+3. Enter the URL of this repository (https://github.com/branimirmarkovic/LocalDataStorageManager.git) and click `Next`.
 4. Choose the latest version or a specific version, then click `Next`.
 5. Select the target you want to add the package to, then click `Finish`.
