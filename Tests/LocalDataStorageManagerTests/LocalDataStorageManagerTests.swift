@@ -10,7 +10,6 @@ import XCTest
 @testable import LocalDataStorageManager
 
 
-
 class LocalDataStorageManagerTests: XCTestCase {
 
     var localDataStorageManager: LocalDataStorageManager!
@@ -20,16 +19,16 @@ class LocalDataStorageManagerTests: XCTestCase {
     }
 
     override func tearDownWithError() throws {
+        localDataStorageManager.cleanUp()
         localDataStorageManager = nil
-         clearTestDirectoriesAndFiles()
     }
     
     func test_Init_DefaultDirectoryName_ShouldCreateDirectory() {
-         clearTestDirectoriesAndFiles()
+        localDataStorageManager.cleanUp()
         let defaultDirectoryName = "RootDirectory"
         
         XCTAssertNoThrow(try LocalDataStorageManager())
-        let localDataStorageManager = try! LocalDataStorageManager()
+        let dataStorageManager = try! LocalDataStorageManager()
         let mainDirectoryUrl = UserDefaults.standard.url(forKey: LocalDataStorageManager.userDefaultsFilePathKey)!
         
         let lastPathComponent = mainDirectoryUrl.lastPathComponent
@@ -37,15 +36,15 @@ class LocalDataStorageManagerTests: XCTestCase {
         
         let fileManager = FileManager.default
         XCTAssertTrue(fileManager.fileExists(atPath: mainDirectoryUrl.path))
-        clearTestDirectoriesAndFilesFor(url: defaultDirectoryName)
+        dataStorageManager.cleanUp()
     }
 
         func test_Init_CustomDirectoryName_ShouldCreateDirectory() {
-            clearTestDirectoriesAndFiles()
+            localDataStorageManager.cleanUp()
             let customDirectoryName = "CustomRootDirectory"
 
             XCTAssertNoThrow(try LocalDataStorageManager(rootDirectoryName: customDirectoryName))
-            _ = try! LocalDataStorageManager(rootDirectoryName: customDirectoryName)
+            let customLocalDataStorageManager = try! LocalDataStorageManager(rootDirectoryName: customDirectoryName)
             let mainDirectoryUrl = UserDefaults.standard.url(forKey: LocalDataStorageManager.userDefaultsFilePathKey)!
 
             let lastPathComponent = mainDirectoryUrl.lastPathComponent
@@ -53,7 +52,7 @@ class LocalDataStorageManagerTests: XCTestCase {
 
             let fileManager = FileManager.default
             XCTAssertTrue(fileManager.fileExists(atPath: mainDirectoryUrl.path))
-           clearTestDirectoriesAndFilesFor(url: customDirectoryName)
+            customLocalDataStorageManager.cleanUp()
         }
 
         func test_Init_DuplicateDirectoryName_ShouldUseExistingDirectory() {
@@ -68,7 +67,8 @@ class LocalDataStorageManagerTests: XCTestCase {
             let secondDirectoryUrl = UserDefaults.standard.url(forKey: LocalDataStorageManager.userDefaultsFilePathKey)!
 
             XCTAssertEqual(firstDirectoryUrl, secondDirectoryUrl)
-            clearTestDirectoriesAndFilesFor(url: customDirectoryName)
+            firstManager.cleanUp()
+            secondManager.cleanUp()
         }
 
 
@@ -182,28 +182,6 @@ class LocalDataStorageManagerTests: XCTestCase {
                 XCTFail("Delete operation on a valid file should not fail.")
             }
         }
-    }
-    
-    private func clearTestDirectoriesAndFiles()  {
-           let fileManager = FileManager.default
-           let mainDirectoryUrl = UserDefaults.standard.url(forKey: LocalDataStorageManager.userDefaultsFilePathKey)
-
-           if let url = mainDirectoryUrl {
-                   try? fileManager.removeItem(at: url)
-           }
-       }
-    
-    private func clearTestDirectoriesAndFilesFor(url: String)  {
-        
-        let fileManager = FileManager.default
-        guard let documentsDirectory = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first else {
-            return
-        }
-        let finalUrl = documentsDirectory.appendingPathComponent(url) 
-        
-            try? fileManager.removeItem(at: finalUrl)
-        
-        
     }
 }
 

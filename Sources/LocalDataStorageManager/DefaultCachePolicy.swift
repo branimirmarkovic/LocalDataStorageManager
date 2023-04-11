@@ -9,14 +9,14 @@ import Foundation
 
 class DefaultCachePolicy: DataCachePolicy {
     
-    var timeLimit: TimeInterval
+   private let timeLimit: TimeInterval
 
-    init(_ timeLimit: TimePolicyLimits) {
-        self.timeLimit = timeLimit.rawValue
+   convenience init(_ timeLimit: TimePolicyLimits) {
+       self.init(timeLimit: timeLimit.rawValue)
     }
     
-    init(customTimeLimit: TimeInterval) {
-        self.timeLimit = customTimeLimit
+    required init(timeLimit: TimeInterval) {
+        self.timeLimit = timeLimit
     }
 
 

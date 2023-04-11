@@ -57,6 +57,11 @@ public class LocalDataStorageManager {
         return mainDirectory
     }
     
+    public func cleanUp() {
+        UserDefaults.standard.removeObject(forKey: Self.userDefaultsFilePathKey)
+        try? fileManager.removeItem(at: mainDirectoryUrl)
+    }
+    
     
     public func read(from url: String, completion: @escaping (Result<Data, Error>) -> Void) {
         let finalPath = self.mainDirectoryUrl.absoluteString + "/" + url
